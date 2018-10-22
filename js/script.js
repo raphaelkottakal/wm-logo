@@ -65,6 +65,8 @@
 	renderer.setSize( width, height );
 	domElement.appendChild( renderer.domElement );
 
+	// var controls = new THREE.OrbitControls( camera );
+
 	var wGroup = new THREE.Group();
 
 
@@ -143,11 +145,11 @@
 	// wGroup.rotation.y = Math.PI / 2;
 
 	var newBulbR = new bulb(-100, 50, 100, 0xff0000, 'red');
-	newBulbR.group.position.set(0, 0, 100);
+	// newBulbR.group.position.set(0, 0, 100);
 	var newBulbG = new bulb(-100, 50, 100, 0x00ff00, 'green');
-	newBulbG.group.position.set(0, 0, 108);
+	newBulbG.group.position.set(0, 0, 8);
 	var newBulbB = new bulb(-100, 50, 100, 0x0000ff, 'blue');
-	newBulbB.group.position.set(0, 0, 116);
+	newBulbB.group.position.set(0, 0, 16);
 	scene.add(newBulbR.group);
 	scene.add(newBulbG.group);
 	scene.add(newBulbB.group);
