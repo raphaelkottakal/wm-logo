@@ -1,20 +1,32 @@
 (function() {
-	var bulb = function(x, y, z, color) {
-
-    // var canvas = document.createElement('canvas');
-    // var size = 256;
+	var bulb = function(x, y, z, color, spriteColor) {
+    var canvas = document.createElement('canvas');
+    var size = 256;
     // document.body.appendChild(canvas);
-    // canvas.width = size;
-    // canvas.height = size;
-    // var context = canvas.getContext('2d');
-    // context.fillStyle = '#ff0000'; // CHANGED
-    // context.textAlign = 'center';
-    // context.font = '24px Arial';
-    // context.fillText("some text!!", size / 2, size / 2);
+    canvas.width = size;
+    canvas.height = size;
+    var context = canvas.getContext('2d');
+		var grd = context.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+		grd.addColorStop(0, spriteColor);
+		grd.addColorStop(1, "black");
+		context.fillStyle = grd;
+		context.fillRect(0, 0, size, size);
 
 		this.group = new THREE.Group();
-		var light = new THREE.PointLight(color, 0.75);
-		var geometry = new THREE.SphereBufferGeometry(3, 16, 16);
+		var light = new THREE.PointLight(color, 1);
+
+		var amap = new THREE.Texture(canvas);
+    amap.needsUpdate = true;
+
+    var mat = new THREE.SpriteMaterial({
+				map: amap,
+				transparent: true,
+				opacity: 0.5,
+				blending: THREE.AdditiveBlending,
+        color: 0xffffff
+    });
+
+		var geometry = new THREE.SphereBufferGeometry(2, 16, 16);
 		var material = new THREE.MeshLambertMaterial({
 			color: color,
       emissive: color,
@@ -24,10 +36,14 @@
       opacity: 0.75
 		});
 		var mesh = new THREE.Mesh(geometry, material);
+		var sp = new THREE.Sprite(mat);
+		sp.scale.set(40, 40, 1);
 		light.position.set(x, y, z);
+		sp.position.set(x, y, z);
 		mesh.position.set(x, y, z);
 		this.group.add(light);
 		this.group.add(mesh);
+		this.group.add(sp);
 	}
 
 	var domElement = document.querySelector('#canvas');
@@ -62,10 +78,10 @@
 	// var material2 = new THREE.MeshLambertMaterial({ color: 'hsl(210, 100%, 40%)', wireframe: false });
 	// var material3 = new THREE.MeshLambertMaterial({ color: 'hsl(210, 100%, 35%)', wireframe: false });
   // var material4 = new THREE.MeshLambertMaterial({ color: 'hsl(210, 100%, 30%)', wireframe: false });
-  var material1 = new THREE.MeshLambertMaterial({ color: 'hsl(210, 0%, 100%)', wireframe: false });
-	var material2 = new THREE.MeshLambertMaterial({ color: 'hsl(210, 0%, 85%)', wireframe: false });
-	var material3 = new THREE.MeshLambertMaterial({ color: 'hsl(210, 0%, 70%)', wireframe: false });
-	var material4 = new THREE.MeshLambertMaterial({ color: 'hsl(210, 0%, 55%)', wireframe: false });
+  var material1 = new THREE.MeshLambertMaterial({ color: 'hsl(0, 0%, 100%)', wireframe: false });
+	var material2 = new THREE.MeshLambertMaterial({ color: 'hsl(0, 0%, 85%)', wireframe: false });
+	var material3 = new THREE.MeshLambertMaterial({ color: 'hsl(0, 0%, 70%)', wireframe: false });
+	var material4 = new THREE.MeshLambertMaterial({ color: 'hsl(0, 0%, 55%)', wireframe: false });
 	// var material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 	var skewLeftMatrix = new THREE.Matrix4();
 	skewLeftMatrix.set(
@@ -126,11 +142,11 @@
 	wGroup.scale.set(1.5,1.5,1.5);
 	// wGroup.rotation.y = Math.PI / 2;
 
-	var newBulbR = new bulb(-100, 50, 100, 0xff0000);
+	var newBulbR = new bulb(-100, 50, 100, 0xff0000, 'red');
 	newBulbR.group.position.set(0, 0, 100);
-	var newBulbG = new bulb(-100, 50, 100, 0x00ff00);
+	var newBulbG = new bulb(-100, 50, 100, 0x00ff00, 'green');
 	newBulbG.group.position.set(0, 0, 108);
-	var newBulbB = new bulb(-100, 50, 100, 0x0000ff);
+	var newBulbB = new bulb(-100, 50, 100, 0x0000ff, 'blue');
 	newBulbB.group.position.set(0, 0, 116);
 	scene.add(newBulbR.group);
 	scene.add(newBulbG.group);
